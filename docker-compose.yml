@@ -1,0 +1,36 @@
+# Use version 3 syntax
+version: "3"
+
+services:
+  # The SQL server container
+  sonar-db:
+    image: "mysql"
+    container_name: "sonar-db"
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "cmlt&md"
+      MYSQL_DATABASE: "sonar"
+      MYSQL_USER: "sonar"
+      MYSQL_PASSWORD: "sonar"
+    volumes:
+      - data-volume:/var/lib/mysql
+
+  # the sonar server container
+  sonar-server:
+    build: "./gnsf"
+    container_name: "sonar-server"
+    ports:
+      - "9000:9000"
+    depends_on:
+      - "sonar-db"
+    links:
+      - "sonar-db"
+    environment:
+      SONARQUBE_JDBC_USERNAME: "sonar"
+      SONARQUBE_JDBC_PASSWORD: "sonar"
+      SONARQUBE_JDBC_URL: "jdbc:mysql://sonar-db:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true"
+
+volumes:
+  # leave blank on purpose
+  data-volume:

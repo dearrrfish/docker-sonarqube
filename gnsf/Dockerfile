@@ -1,12 +1,11 @@
 FROM sonarqube:latest
 
-MAINTAINER dearrrfish "dearrrfish@gmail.com"
+MAINTAINER Yu Jin "dearrrfish@gmail.com"
 
 RUN mkdir -p $HOME/sonar-plugins
-RUN rm $HOME/sonar-plugins/*
 
 # Databse
-ENV SONARQUBE_JDBC_URL=jdbc:mysql://localhost:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
+ENV SONARQUBE_JDBC_URL jdbc:mysql://localhost:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
 
 # Plugins
 
@@ -29,6 +28,18 @@ RUN set -x && curl -sLo $HOME/sonar-plugins/sonar-java-plugin-${JAVA_PLUGIN_VERS
 ENV FINDBUGS_PLUGIN_VERSION 3.4.4
 RUN set -x && curl -sLo $HOME/sonar-plugins/sonar-findbugs-plugin-${FINDBUGS_PLUGIN_VERSION}.jar \
   https://github.com/SonarQubeCommunity/sonar-findbugs/releases/download/${FINDBUGS_PLUGIN_VERSION}/sonar-findbugs-plugin-${FINDBUGS_PLUGIN_VERSION}.jar
+
+ENV JS_PLUGIN_VERSION 3.0.0.4962
+RUN set -x && curl -sLo $HOME/sonar-plugins/sonar-javascript-plugin-${JS_PLUGIN_VERSION}.jar \
+	https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-${JS_PLUGIN_VERSION}.jar
+
+ENV PHP_PLUGIN_VERSION 2.9.2.1744
+RUN set -x && curl -sLo $HOME/sonar-plugins/sonar-php-plugin-${PHP_PLUGIN_VERSION}.jar \
+  https://sonarsource.bintray.com/Distribution/sonar-php-plugin/sonar-php-plugin-${PHP_PLUGIN_VERSION}.jar
+
+ENV PYTHON_PLUGIN_VERSION 1.7.0.1195
+RUN set -x && curl -sLo $HOME/sonar-plugins/sonar-python-plugin-${PYTHON_PLUGIN_VERSION}.jar \
+  https://sonarsource.bintray.com/Distribution/sonar-python-plugin/sonar-python-plugin-${PYTHON_PLUGIN_VERSION}.jar
 
 # End Plugins
 
